@@ -69,5 +69,8 @@
     "minute": "Min",
     "am": "AM",
     "pm": "PM"
+  },
+  "apiError": {
+    "tryAgain": "Something went wrong, please try again 💕"
   }
 }
