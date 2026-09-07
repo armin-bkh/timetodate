@@ -53,7 +53,9 @@ function DateApp() {
               }}
             />
           )}
-          {step === 4 && <StepFour key="step4" dateData={dateData} />}
+          {step === 4 && (
+            <StepFour key="step4" dateData={dateData} />
+          )}
         </AnimatePresence>
       </div>
     </div>

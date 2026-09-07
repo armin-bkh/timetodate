@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { format, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { formatDatePersian } from "../utils/persian";
+import { createDateRequest } from "../api/dates";
 
 interface StepFourProps {
   dateData: {
@@ -13,6 +15,23 @@ interface StepFourProps {
 export default function StepFour({ dateData }: StepFourProps) {
   const { t, i18n } = useTranslation();
   const isFa = i18n.language === "fa";
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const submit = async () => {
+      try {
+        await createDateRequest({
+          datetime: dateData.datetime,
+          activity: dateData.activity,
+        });
+        setSaved(true);
+      } catch {
+        setError(true);
+      }
+    };
+    submit();
+  }, [dateData]);
 
   const formatDateTime = (dt: string) => {
     try {
@@ -94,6 +113,25 @@ export default function StepFour({ dateData }: StepFourProps) {
           </div>
         </div>
       </motion.div>
+
+      {saved && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-4 text-green-500 text-sm"
+        >
+          ✅ Request saved!
+        </motion.div>
+      )}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-4 text-orange-400 text-sm"
+        >
+          Could not save to server, but the date is set! 💌
+        </motion.div>
+      )}
 
       <motion.div
         initial={{ opacity: 0 }}
