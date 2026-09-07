@@ -1,44 +1,46 @@
-import { motion } from 'framer-motion'
-import { format, parseISO } from 'date-fns'
+import { motion } from "framer-motion";
+import { format, parseISO } from "date-fns";
+import { useTranslation } from "react-i18next";
+import { formatDatePersian } from "../utils/persian";
 
 interface StepFourProps {
   dateData: {
-    datetime: string
-    activity: string
-  }
+    datetime: string;
+    activity: string;
+  };
 }
 
-const loveMessages = [
-  "You just made my day! 🌟",
-  "I can't stop smiling! 😊",
-  "This is going to be amazing! 💫",
-  "My heart is doing happy dances! 💃",
-  "You're the best thing ever! 🌈",
-]
-
 export default function StepFour({ dateData }: StepFourProps) {
+  const { t, i18n } = useTranslation();
+  const isFa = i18n.language === "fa";
+
   const formatDateTime = (dt: string) => {
     try {
-      const date = parseISO(dt)
-      return format(date, "EEEE, MMMM do 'at' h:mm a")
+      const date = new Date(dt);
+      if (isFa) {
+        return formatDatePersian(date);
+      }
+      const parsed = parseISO(dt);
+      return format(parsed, "EEEE, MMMM do 'at' h:mm a");
     } catch {
-      return dt
+      return dt;
     }
-  }
+  };
 
-  const randomMessage = loveMessages[Math.floor(Math.random() * loveMessages.length)]
+  const messages = t("step4.messages", { returnObjects: true }) as string[];
+  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, type: 'spring' }}
+      transition={{ duration: 0.6, type: "spring" }}
       className="glass-card rounded-3xl text-center"
     >
       <motion.div
         initial={{ scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
-        transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+        transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
         className="text-7xl mb-6"
       >
         🎉
@@ -50,7 +52,7 @@ export default function StepFour({ dateData }: StepFourProps) {
         transition={{ delay: 0.3 }}
         className="font-dancing text-4xl md:text-5xl text-pink-500 mb-4"
       >
-        It's a Date!
+        {t("step4.title")}
       </motion.h2>
 
       <motion.p
@@ -72,7 +74,7 @@ export default function StepFour({ dateData }: StepFourProps) {
           <div className="flex items-center justify-center gap-3">
             <span className="text-2xl">📅</span>
             <div className="text-left">
-              <div className="text-sm text-gray-400">When</div>
+              <div className="text-sm text-gray-400">{t("step4.when")}</div>
               <div className="text-gray-700 font-medium">
                 {formatDateTime(dateData.datetime)}
               </div>
@@ -84,8 +86,10 @@ export default function StepFour({ dateData }: StepFourProps) {
           <div className="flex items-center justify-center gap-3">
             <span className="text-2xl">✨</span>
             <div className="text-left">
-              <div className="text-sm text-gray-400">What</div>
-              <div className="text-gray-700 font-medium">{dateData.activity}</div>
+              <div className="text-sm text-gray-400">{t("step4.what")}</div>
+              <div className="text-gray-700 font-medium">
+                {t(`step3.options.${dateData.activity}.label`)}
+              </div>
             </div>
           </div>
         </div>
@@ -97,17 +101,15 @@ export default function StepFour({ dateData }: StepFourProps) {
         transition={{ delay: 0.7 }}
         className="space-y-4"
       >
-        <p className="text-gray-500 italic">
-          "Every love story is beautiful, but ours is my favorite" 💕
-        </p>
+        <p className="text-gray-500 italic">{t("step4.quote")}</p>
 
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          transition={{ delay: 0.8, type: 'spring' }}
+          transition={{ delay: 0.8, type: "spring" }}
           className="flex justify-center gap-2 text-3xl"
         >
-          {['💖', '💕', '💗', '💝', '💖'].map((heart, i) => (
+          {["💖", "💕", "💗", "💝", "💖"].map((heart, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 20 }}
@@ -127,9 +129,9 @@ export default function StepFour({ dateData }: StepFourProps) {
           transition={{ delay: 1.2 }}
           className="text-pink-400 font-dancing text-2xl mt-6"
         >
-          See you there! 💋
+          {t("step4.seeYou")}
         </motion.p>
       </motion.div>
     </motion.div>
-  )
+  );
 }

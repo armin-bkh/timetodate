@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
+import { toPersianDigits } from '../utils/persian'
 
 interface TimePickerProps {
   selectedTime: { hours: number; minutes: number } | null
@@ -67,8 +69,11 @@ function ScrollColumn({
 }
 
 export default function TimePicker({ selectedTime, onTimeSelect }: TimePickerProps) {
+  const { t, i18n } = useTranslation()
   const [hours, setHours] = useState<number | null>(selectedTime?.hours ?? null)
   const [minutes, setMinutes] = useState<number | null>(selectedTime?.minutes ?? null)
+
+  const isFa = i18n.language === 'fa'
 
   const handleHours = (h: number) => {
     setHours(h)
@@ -81,13 +86,16 @@ export default function TimePicker({ selectedTime, onTimeSelect }: TimePickerPro
   }
 
   const formatHour = (h: number) => {
-    if (h === 0) return '12 AM'
-    if (h < 12) return `${h} AM`
-    if (h === 12) return '12 PM'
-    return `${h - 12} PM`
+    const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h
+    const num = isFa ? toPersianDigits(String(h12)) : String(h12)
+    const suffix = h >= 12 ? t('timepicker.pm') : t('timepicker.am')
+    return `${num} ${suffix}`
   }
 
-  const formatMinute = (m: number) => m.toString().padStart(2, '0')
+  const formatMinute = (m: number) => {
+    const str = String(m).padStart(2, '0')
+    return isFa ? toPersianDigits(str) : str
+  }
 
   const allHours = Array.from({ length: 24 }, (_, i) => i)
   const allMinutes = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
@@ -95,7 +103,7 @@ export default function TimePicker({ selectedTime, onTimeSelect }: TimePickerPro
   return (
     <div className="flex items-center gap-4">
       <div className="flex-1 bg-pink-50/50 rounded-2xl p-3">
-        <div className="text-center text-xs text-pink-300 font-medium mb-2">Hour</div>
+        <div className="text-center text-xs text-pink-300 font-medium mb-2">{t('timepicker.hour')}</div>
         <ScrollColumn
           items={allHours}
           selected={hours}
@@ -105,7 +113,7 @@ export default function TimePicker({ selectedTime, onTimeSelect }: TimePickerPro
       </div>
       <div className="text-2xl font-dancing text-pink-400 mt-6">:</div>
       <div className="flex-1 bg-pink-50/50 rounded-2xl p-3">
-        <div className="text-center text-xs text-pink-300 font-medium mb-2">Min</div>
+        <div className="text-center text-xs text-pink-300 font-medium mb-2">{t('timepicker.minute')}</div>
         <ScrollColumn
           items={allMinutes}
           selected={minutes}

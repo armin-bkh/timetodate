@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { isAfter } from 'date-fns'
+import { useTranslation } from 'react-i18next'
+import { formatDatePersian, formatTimePersian } from '../utils/persian'
 import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 
@@ -9,9 +11,12 @@ interface StepTwoProps {
 }
 
 export default function StepTwo({ onNext }: StepTwoProps) {
+  const { t, i18n } = useTranslation()
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [selectedTime, setSelectedTime] = useState<{ hours: number; minutes: number } | null>(null)
   const [error, setError] = useState('')
+
+  const isFa = i18n.language === 'fa'
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date)
@@ -25,7 +30,7 @@ export default function StepTwo({ onNext }: StepTwoProps) {
 
   const handleSubmit = () => {
     if (!selectedDate || !selectedTime) {
-      setError('Please select both date and time 💕')
+      setError(t('step2.errorEmpty'))
       return
     }
 
@@ -33,13 +38,27 @@ export default function StepTwo({ onNext }: StepTwoProps) {
     datetime.setHours(selectedTime.hours, selectedTime.minutes, 0, 0)
 
     if (!isAfter(datetime, new Date())) {
-      setError('Please choose a future date and time 🕐')
+      setError(t('step2.errorPast'))
       return
     }
 
     setError('')
     const iso = datetime.toISOString().slice(0, 16)
     onNext(iso)
+  }
+
+  const formatPreview = () => {
+    if (!selectedDate || !selectedTime) return ''
+    if (isFa) {
+      const dateStr = formatDatePersian(selectedDate)
+      const timeStr = formatTimePersian(selectedTime.hours, selectedTime.minutes)
+      return t('step2.preview', { date: dateStr, time: timeStr })
+    }
+    const dateStr = selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+    const h = selectedTime.hours === 0 ? '12' : selectedTime.hours > 12 ? String(selectedTime.hours - 12) : String(selectedTime.hours)
+    const m = selectedTime.minutes.toString().padStart(2, '0')
+    const ap = selectedTime.hours >= 12 ? 'PM' : 'AM'
+    return t('step2.preview', { date: dateStr, time: `${h}:${m} ${ap}` })
   }
 
   return (
@@ -65,7 +84,7 @@ export default function StepTwo({ onNext }: StepTwoProps) {
         transition={{ delay: 0.3 }}
         className="font-dancing text-3xl md:text-4xl text-pink-500 mb-2 text-center"
       >
-        When shall we meet?
+        {t('step2.title')}
       </motion.h2>
 
       <motion.p
@@ -74,7 +93,7 @@ export default function StepTwo({ onNext }: StepTwoProps) {
         transition={{ delay: 0.4 }}
         className="text-gray-500 mb-8 text-center"
       >
-        Pick a date and time for our special day 🌸
+        {t('step2.subtitle')}
       </motion.p>
 
       <div className="space-y-6">
@@ -84,7 +103,7 @@ export default function StepTwo({ onNext }: StepTwoProps) {
           transition={{ delay: 0.5 }}
         >
           <label className="block text-pink-400 font-medium mb-3">
-            📆 Date
+            {t('step2.dateLabel')}
           </label>
           <div className="bg-white/50 rounded-2xl p-4">
             <DatePicker
@@ -101,7 +120,7 @@ export default function StepTwo({ onNext }: StepTwoProps) {
           transition={{ delay: 0.6 }}
         >
           <label className="block text-pink-400 font-medium mb-3">
-            🕐 Time
+            {t('step2.timeLabel')}
           </label>
           <div className="bg-white/50 rounded-2xl p-4">
             <TimePicker
@@ -117,11 +136,7 @@ export default function StepTwo({ onNext }: StepTwoProps) {
             animate={{ opacity: 1, y: 0 }}
             className="bg-pink-50 rounded-xl py-3 px-4 text-center text-pink-500 font-medium"
           >
-            📅 {selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-            {' at '}
-            {selectedTime.hours === 0 ? '12' : selectedTime.hours > 12 ? selectedTime.hours - 12 : selectedTime.hours}
-            :{selectedTime.minutes.toString().padStart(2, '0')}
-            {selectedTime.hours >= 12 ? ' PM' : ' AM'}
+            📅 {formatPreview()}
           </motion.div>
         )}
 
@@ -144,7 +159,7 @@ export default function StepTwo({ onNext }: StepTwoProps) {
           whileTap={{ scale: 0.98 }}
           className="btn-primary w-full text-white font-semibold rounded-xl text-lg"
         >
-          Continue 💕
+          {t('common.continue')} 💕
         </motion.button>
       </div>
     </motion.div>

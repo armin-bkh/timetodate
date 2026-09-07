@@ -1,22 +1,10 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 interface StepOneProps {
   onYes: () => void
 }
-
-const noMessages = [
-  "Are you sure? 🥺",
-  "Please say yes! 💕",
-  "Don't break my heart! 💔",
-  "I'll be so sad... 😢",
-  "Come on, it'll be fun! 🌟",
-  "I promise a good time! ✨",
-  "Pretty please? 🙏",
-  "With a cherry on top? 🍒",
-  "My heart is melting... 🫠",
-  "You're breaking my heart! 💗",
-]
 
 const noPositions = [
   { x: 100, y: -50 },
@@ -30,11 +18,14 @@ const noPositions = [
 ]
 
 export default function StepOne({ onYes }: StepOneProps) {
+  const { t } = useTranslation()
   const [noClicks, setNoClicks] = useState(0)
   const [currentMessage, setCurrentMessage] = useState('')
   const [isRunning, setIsRunning] = useState(false)
   const [noPosition, setNoPosition] = useState({ x: 0, y: 0 })
   const buttonRef = useRef<HTMLButtonElement>(null)
+
+  const noMessages = t('step1.noMessages', { returnObjects: true }) as string[]
 
   const handleNoClick = () => {
     const messageIndex = noClicks % noMessages.length
@@ -74,7 +65,7 @@ export default function StepOne({ onYes }: StepOneProps) {
         transition={{ delay: 0.3 }}
         className="font-dancing text-4xl md:text-5xl text-pink-500 mb-4 leading-tight"
       >
-        Will you go on a date with me?
+        {t('step1.title')}
       </motion.h1>
 
       <motion.p
@@ -83,7 +74,7 @@ export default function StepOne({ onYes }: StepOneProps) {
         transition={{ delay: 0.4 }}
         className="text-gray-600 mb-8 text-lg"
       >
-        I promise it'll be special ✨
+        {t('step1.subtitle')}
       </motion.p>
 
       {currentMessage && (
@@ -105,9 +96,9 @@ export default function StepOne({ onYes }: StepOneProps) {
           onClick={onYes}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="btn-primary text-white font-semibold py-4 px-10 rounded-full text-xl animate-pulse-glow"
+          className="btn-primary text-white font-semibold rounded-full text-xl animate-pulse-glow"
         >
-          Yes! 💖
+          {t('common.yes')} 💖
         </motion.button>
 
         <motion.button
@@ -118,12 +109,12 @@ export default function StepOne({ onYes }: StepOneProps) {
             rotate: [0, 10, -10, 5, 0],
           } : {}}
           transition={{ duration: 0.5 }}
-          className="btn-no text-gray-600 font-medium py-4 px-8 rounded-full text-lg relative"
+          className="btn-no text-gray-600 font-medium rounded-full text-lg relative"
           style={{
             transform: isRunning ? undefined : `translate(${noPosition.x * 0.1}px, ${noPosition.y * 0.1}px)`,
           }}
         >
-          No 😅
+          {t('common.no')} 😅
         </motion.button>
       </div>
 
@@ -133,7 +124,7 @@ export default function StepOne({ onYes }: StepOneProps) {
           animate={{ opacity: 1 }}
           className="mt-6 text-pink-400 italic text-sm"
         >
-          Hint: The "Yes" button has all the answers 💝
+          {t('step1.hint')}
         </motion.p>
       )}
     </motion.div>

@@ -26,6 +26,17 @@ body {
   overflow-x: hidden;
 }
 
+[dir="rtl"] body,
+[dir="rtl"] .glass-card,
+[dir="rtl"] .input-love,
+[dir="rtl"] .option-card {
+  font-family: 'Vazirmatn', 'Poppins', sans-serif;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
 .font-dancing {
   font-family: 'Dancing Script', cursive;
 }

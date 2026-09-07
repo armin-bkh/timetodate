@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import './i18n'
 import StepOne from './components/StepOne'
 import StepTwo from './components/StepTwo'
 import StepThree from './components/StepThree'
 import StepFour from './components/StepFour'
 import FloatingHearts from './components/FloatingHearts'
+import LanguageSwitcher from './components/LanguageSwitcher'
 
 function App() {
   const [step, setStep] = useState(1)
@@ -18,6 +20,7 @@ function App() {
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4">
       <FloatingHearts />
+      <LanguageSwitcher />
       
       <div className="relative z-10 w-full max-w-lg">
         <AnimatePresence mode="wait">

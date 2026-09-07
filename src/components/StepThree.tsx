@@ -1,22 +1,26 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 interface StepThreeProps {
   onNext: (activity: string) => void
 }
 
-const options = [
-  { id: 'pizza', emoji: '🍕', label: 'Pizza Night', description: 'Classic Italian vibes' },
-  { id: 'pasta', emoji: '🍝', label: 'Pasta Paradise', description: 'Pasta la vista, baby!' },
-  { id: 'coffee', emoji: '☕', label: 'Coffee Date', description: 'Warm & cozy vibes' },
-  { id: 'sushi', emoji: '🍣', label: 'Sushi Date', description: 'Something special' },
-  { id: 'park', emoji: '🌳', label: 'Park Walk', description: 'Nature & fresh air' },
-  { id: 'movie', emoji: '🎬', label: 'Movie Night', description: 'Cinema magic' },
-  { id: 'picnic', emoji: '🧺', label: 'Picnic', description: 'Under the stars' },
-  { id: 'dessert', emoji: '🍰', label: 'Dessert Only', description: 'Sweet tooth heaven' },
-]
+const optionIds = ['pizza', 'pasta', 'coffee', 'sushi', 'park', 'movie', 'picnic', 'dessert']
+
+const optionEmojis: Record<string, string> = {
+  pizza: '🍕',
+  pasta: '🍝',
+  coffee: '☕',
+  sushi: '🍣',
+  park: '🌳',
+  movie: '🎬',
+  picnic: '🧺',
+  dessert: '🍰',
+}
 
 export default function StepThree({ onNext }: StepThreeProps) {
+  const { t } = useTranslation()
   const [selected, setSelected] = useState('')
 
   const handleSelect = (id: string) => {
@@ -25,8 +29,7 @@ export default function StepThree({ onNext }: StepThreeProps) {
 
   const handleSubmit = () => {
     if (!selected) return
-    const option = options.find(o => o.id === selected)
-    onNext(option?.label || selected)
+    onNext(selected)
   }
 
   return (
@@ -52,7 +55,7 @@ export default function StepThree({ onNext }: StepThreeProps) {
         transition={{ delay: 0.3 }}
         className="font-dancing text-3xl md:text-4xl text-pink-500 mb-2 text-center"
       >
-        What should we do?
+        {t('step3.title')}
       </motion.h2>
 
       <motion.p
@@ -61,26 +64,26 @@ export default function StepThree({ onNext }: StepThreeProps) {
         transition={{ delay: 0.4 }}
         className="text-gray-500 mb-8 text-center"
       >
-        Pick something you'd love 💝
+        {t('step3.subtitle')}
       </motion.p>
 
       <div className="grid grid-cols-2 gap-3 mb-8">
-        {options.map((option, index) => (
+        {optionIds.map((id, index) => (
           <motion.button
-            key={option.id}
+            key={id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 + index * 0.05 }}
-            onClick={() => handleSelect(option.id)}
+            onClick={() => handleSelect(id)}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             className={`option-card rounded-2xl p-4 text-center relative overflow-hidden ${
-              selected === option.id ? 'selected' : ''
+              selected === id ? 'selected' : ''
             }`}
           >
-            <div className="text-3xl mb-2">{option.emoji}</div>
-            <div className="font-medium text-gray-700 text-sm">{option.label}</div>
-            <div className="text-xs text-gray-400 mt-1">{option.description}</div>
+            <div className="text-3xl mb-2">{optionEmojis[id]}</div>
+            <div className="font-medium text-gray-700 text-sm">{t(`step3.options.${id}.label`)}</div>
+            <div className="text-xs text-gray-400 mt-1">{t(`step3.options.${id}.description`)}</div>
           </motion.button>
         ))}
       </div>
@@ -99,7 +102,7 @@ export default function StepThree({ onNext }: StepThreeProps) {
             : 'bg-gray-200 text-gray-400 cursor-not-allowed'
         }`}
       >
-        {selected ? 'Perfect Choice! 💕' : 'Pick one above ✨'}
+        {selected ? t('step3.perfectChoice') : t('step3.pickOne')}
       </motion.button>
     </motion.div>
   )

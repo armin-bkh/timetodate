@@ -1,0 +1,73 @@
+{
+  "common": {
+    "yes": "Yes!",
+    "no": "No",
+    "continue": "Continue",
+    "confirm": "Confirm"
+  },
+  "step1": {
+    "title": "Will you go on a date with me?",
+    "subtitle": "I promise it'll be special ✨",
+    "hint": "Hint: The \"Yes\" button has all the answers 💝",
+    "noMessages": [
+      "Are you sure? 🥺",
+      "Please say yes! 💕",
+      "Don't break my heart! 💔",
+      "I'll be so sad... 😢",
+      "Come on, it'll be fun! 🌟",
+      "I promise a good time! ✨",
+      "Pretty please? 🙏",
+      "With a cherry on top? 🍒",
+      "My heart is melting... 🫠",
+      "You're breaking my heart! 💗"
+    ]
+  },
+  "step2": {
+    "title": "When shall we meet?",
+    "subtitle": "Pick a date and time for our special day 🌸",
+    "dateLabel": "📆 Date",
+    "timeLabel": "🕐 Time",
+    "errorEmpty": "Please select both date and time 💕",
+    "errorPast": "Please choose a future date and time 🕐",
+    "preview": "{{date}} at {{time}}"
+  },
+  "step3": {
+    "title": "What should we do?",
+    "subtitle": "Pick something you'd love 💝",
+    "pickOne": "Pick one above ✨",
+    "perfectChoice": "Perfect Choice! 💕",
+    "options": {
+      "pizza": { "label": "Pizza Night", "description": "Classic Italian vibes" },
+      "pasta": { "label": "Pasta Paradise", "description": "Pasta la vista, baby!" },
+      "coffee": { "label": "Coffee Date", "description": "Warm & cozy vibes" },
+      "sushi": { "label": "Sushi Date", "description": "Something special" },
+      "park": { "label": "Park Walk", "description": "Nature & fresh air" },
+      "movie": { "label": "Movie Night", "description": "Cinema magic" },
+      "picnic": { "label": "Picnic", "description": "Under the stars" },
+      "dessert": { "label": "Dessert Only", "description": "Sweet tooth heaven" }
+    }
+  },
+  "step4": {
+    "title": "It's a Date!",
+    "when": "When",
+    "what": "What",
+    "quote": "\"Every love story is beautiful, but ours is my favorite\" 💕",
+    "seeYou": "See you there! 💋",
+    "messages": [
+      "You just made my day! 🌟",
+      "I can't stop smiling! 😊",
+      "This is going to be amazing! 💫",
+      "My heart is doing happy dances! 💃",
+      "You're the best thing ever! 🌈"
+    ]
+  },
+  "datepicker": {
+    "weekDays": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+  },
+  "timepicker": {
+    "hour": "Hour",
+    "minute": "Min",
+    "am": "AM",
+    "pm": "PM"
+  }
+}

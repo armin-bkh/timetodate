@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
+import { toPersianDigits } from '../utils/persian'
 import {
   format,
   startOfMonth,
@@ -14,6 +16,7 @@ import {
   isToday,
   isBefore,
 } from 'date-fns'
+import { enUS, faIR } from 'date-fns/locale'
 
 interface DatePickerProps {
   selectedDate: Date | null
@@ -21,16 +24,26 @@ interface DatePickerProps {
   minDate?: Date
 }
 
-const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+const enWeekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+
+const faMonthNames = [
+  'ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن',
+  'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'
+]
 
 export default function DatePicker({ selectedDate, onDateSelect, minDate }: DatePickerProps) {
+  const { t, i18n } = useTranslation()
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [direction, setDirection] = useState(0)
 
+  const isFa = i18n.language === 'fa'
+  const locale = isFa ? faIR : enUS
+  const weekDays = isFa ? (t('datepicker.weekDays', { returnObjects: true }) as string[]) : enWeekDays
+
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(monthStart)
-  const calStart = startOfWeek(monthStart)
-  const calEnd = endOfWeek(monthEnd)
+  const calStart = startOfWeek(monthStart, { weekStartsOn: isFa ? 6 : 0 })
+  const calEnd = endOfWeek(monthEnd, { weekStartsOn: isFa ? 6 : 0 })
 
   const days: Date[] = []
   let day = calStart
@@ -54,14 +67,23 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate }: Date
     return false
   }
 
+  const formatMonthYear = () => {
+    if (isFa) {
+      const monthName = faMonthNames[currentMonth.getMonth()]
+      const year = toPersianDigits(String(currentMonth.getFullYear()))
+      return `${monthName} ${year}`
+    }
+    return format(currentMonth, 'MMMM yyyy', { locale })
+  }
+
   return (
     <div className="select-none">
       <div className="flex items-center justify-between mb-4">
         <button
-          onClick={prevMonth}
+          onClick={isFa ? nextMonth : prevMonth}
           className="w-10 h-10 rounded-full flex items-center justify-center text-pink-400 hover:bg-pink-100 transition-colors text-lg font-bold"
         >
-          ‹
+          {isFa ? '›' : '‹'}
         </button>
         <AnimatePresence mode="wait" initial={false}>
           <motion.h3
@@ -72,14 +94,14 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate }: Date
             transition={{ duration: 0.2 }}
             className="font-dancing text-xl text-pink-500"
           >
-            {format(currentMonth, 'MMMM yyyy')}
+            {formatMonthYear()}
           </motion.h3>
         </AnimatePresence>
         <button
-          onClick={nextMonth}
+          onClick={isFa ? prevMonth : nextMonth}
           className="w-10 h-10 rounded-full flex items-center justify-center text-pink-400 hover:bg-pink-100 transition-colors text-lg font-bold"
         >
-          ›
+          {isFa ? '‹' : '›'}
         </button>
       </div>
 
@@ -97,6 +119,7 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate }: Date
           const selected = selectedDate && isSameDay(d, selectedDate)
           const today = isToday(d)
           const disabled = isDisabled(d)
+          const dayNum = isFa ? toPersianDigits(format(d, 'd')) : format(d, 'd')
 
           return (
             <motion.button
@@ -120,7 +143,7 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate }: Date
                   : undefined
               }
             >
-              {format(d, 'd')}
+              {dayNum}
               {today && !selected && (
                 <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-pink-400" />
               )}
