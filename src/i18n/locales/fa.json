@@ -36,6 +36,7 @@
     "subtitle": "هر چی دوست داری انتخاب کن 💝",
     "pickOne": "یکی رو انتخاب کن ✨",
     "perfectChoice": "عالیه! 💕",
+    "sending": "در حال ارسال...",
     "options": {
       "pizza": { "label": "پیتزا", "description": "یه شب ایتالیایی" },
       "pasta": { "label": "پاستا", "description": "پاستا با طعم عشق" },

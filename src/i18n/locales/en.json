@@ -36,6 +36,7 @@
     "subtitle": "Pick something you'd love 💝",
     "pickOne": "Pick one above ✨",
     "perfectChoice": "Perfect Choice! 💕",
+    "sending": "Sending...",
     "options": {
       "pizza": { "label": "Pizza Night", "description": "Classic Italian vibes" },
       "pasta": { "label": "Pasta Paradise", "description": "Pasta la vista, baby!" },

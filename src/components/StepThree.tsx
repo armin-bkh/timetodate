@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 interface StepThreeProps {
   onNext: (activity: string) => void
+  loading: boolean
 }
 
 const optionIds = ['pizza', 'pasta', 'coffee', 'sushi', 'park', 'movie', 'picnic', 'dessert']
@@ -19,7 +20,7 @@ const optionEmojis: Record<string, string> = {
   dessert: '🍰',
 }
 
-export default function StepThree({ onNext }: StepThreeProps) {
+export default function StepThree({ onNext, loading }: StepThreeProps) {
   const { t } = useTranslation()
   const [selected, setSelected] = useState('')
 
@@ -93,16 +94,26 @@ export default function StepThree({ onNext }: StepThreeProps) {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9 }}
         onClick={handleSubmit}
-        disabled={!selected}
-        whileHover={selected ? { scale: 1.02 } : {}}
-        whileTap={selected ? { scale: 0.98 } : {}}
-        className={`w-full py-4 rounded-xl text-lg font-semibold transition-all ${
-          selected
+        disabled={!selected || loading}
+        whileHover={selected && !loading ? { scale: 1.02 } : {}}
+        whileTap={selected && !loading ? { scale: 0.98 } : {}}
+        className={`w-full py-4 rounded-xl text-lg font-semibold transition-all flex items-center justify-center gap-2 ${
+          selected && !loading
             ? 'btn-primary text-white'
             : 'bg-gray-200 text-gray-400 cursor-not-allowed'
         }`}
       >
-        {selected ? t('step3.perfectChoice') : t('step3.pickOne')}
+        {loading ? (
+          <>
+            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+            {t('step3.sending')}
+          </>
+        ) : (
+          selected ? t('step3.perfectChoice') : t('step3.pickOne')
+        )}
       </motion.button>
     </motion.div>
   )

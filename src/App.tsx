@@ -19,6 +19,7 @@ function DateApp() {
     activity: '',
   })
   const [toast, setToast] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const guestName = useMemo(() => {
     const params = new URLSearchParams(location.search)
@@ -43,6 +44,7 @@ function DateApp() {
   const handleActivitySelect = async (activity: string) => {
     const newDateData = { ...dateData, activity }
     setDateData(newDateData)
+    setLoading(true)
     try {
       await createDateRequest({
         guestName,
@@ -52,6 +54,8 @@ function DateApp() {
       nextStep()
     } catch {
       showToast(t('apiError.tryAgain'))
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -90,6 +94,7 @@ function DateApp() {
             <StepThree
               key="step3"
               onNext={handleActivitySelect}
+              loading={loading}
             />
           )}
           {step === 4 && <StepFour key="step4" dateData={dateData} />}
