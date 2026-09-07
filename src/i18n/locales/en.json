@@ -36,16 +36,24 @@
     "subtitle": "Pick something you'd love 💝",
     "pickOne": "Pick one above ✨",
     "perfectChoice": "Perfect Choice! 💕",
-    "sending": "Sending...",
     "options": {
-      "pizza": { "label": "Pizza Night", "description": "Classic Italian vibes" },
-      "pasta": { "label": "Pasta Paradise", "description": "Pasta la vista, baby!" },
+      "pizza": {
+        "label": "Pizza Night",
+        "description": "Classic Italian vibes"
+      },
+      "pasta": {
+        "label": "Pasta Paradise",
+        "description": "Pasta la vista, baby!"
+      },
       "coffee": { "label": "Coffee Date", "description": "Warm & cozy vibes" },
       "sushi": { "label": "Sushi Date", "description": "Something special" },
       "park": { "label": "Park Walk", "description": "Nature & fresh air" },
       "movie": { "label": "Movie Night", "description": "Cinema magic" },
       "picnic": { "label": "Picnic", "description": "Under the stars" },
-      "dessert": { "label": "Dessert Only", "description": "Sweet tooth heaven" }
+      "dessert": {
+        "label": "Dessert Only",
+        "description": "Sweet tooth heaven"
+      }
     }
   },
   "step4": {
