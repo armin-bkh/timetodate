@@ -8,9 +8,15 @@ const resources = {
   fa: { translation: fa },
 }
 
+function getLangFromPath(): string {
+  const path = window.location.pathname
+  if (path.startsWith('/fa')) return 'fa'
+  return 'en'
+}
+
 i18n.use(initReactI18next).init({
   resources,
-  lng: localStorage.getItem('lang') || 'en',
+  lng: getLangFromPath(),
   fallbackLng: 'en',
   interpolation: {
     escapeValue: false,

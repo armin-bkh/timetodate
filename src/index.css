@@ -2,6 +2,54 @@
 
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Far_khodkar';
+  src: url('./fonts/Far_khodkar/Far_khodkar.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vazir';
+  src: url('./fonts/vazir-font/Vazir.woff2') format('woff2'),
+       url('./fonts/vazir-font/Vazir.woff') format('woff'),
+       url('./fonts/vazir-font/Vazir.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vazir';
+  src: url('./fonts/vazir-font/Vazir-Bold.woff2') format('woff2'),
+       url('./fonts/vazir-font/Vazir-Bold.woff') format('woff'),
+       url('./fonts/vazir-font/Vazir-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vazir';
+  src: url('./fonts/vazir-font/Vazir-Light.woff2') format('woff2'),
+       url('./fonts/vazir-font/Vazir-Light.woff') format('woff'),
+       url('./fonts/vazir-font/Vazir-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vazir';
+  src: url('./fonts/vazir-font/Vazir-Medium.woff2') format('woff2'),
+       url('./fonts/vazir-font/Vazir-Medium.woff') format('woff'),
+       url('./fonts/vazir-font/Vazir-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --pink-100: #fce7f3;
   --pink-200: #fbcfe8;
@@ -24,17 +72,21 @@ body {
   background: linear-gradient(135deg, #fce7f3 0%, #ffe4e6 50%, #fef3c7 100%);
   min-height: 100vh;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
-[dir="rtl"] body,
-[dir="rtl"] .glass-card,
-[dir="rtl"] .input-love,
-[dir="rtl"] .option-card {
-  font-family: 'Vazirmatn', 'Poppins', sans-serif;
+[dir="rtl"] body {
+  font-family: 'Vazir', sans-serif;
 }
 
-[dir="rtl"] .text-left {
-  text-align: right;
+[dir="rtl"] .glass-card {
+  font-family: 'Vazir', sans-serif;
+}
+
+[dir="rtl"] .font-dancing,
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3 {
+  font-family: 'Far_khodkar', cursive;
 }
 
 .font-dancing {
@@ -145,8 +197,12 @@ body {
   transition: left 0.5s ease;
 }
 
-.btn-primary:hover::before {
+[dir="rtl"] .btn-primary::before {
   left: 100%;
+}
+
+[dir="rtl"] .btn-primary:hover::before {
+  left: -100%;
 }
 
 .btn-primary:hover {
