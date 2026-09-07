@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -20,6 +20,11 @@ function DateApp() {
   })
   const [toast, setToast] = useState('')
 
+  const guestName = useMemo(() => {
+    const params = new URLSearchParams(location.search)
+    return params.get('key-name') || 'unknown'
+  }, [location.search])
+
   const lang = location.pathname.startsWith('/fa') ? 'fa' : 'en'
 
   useEffect(() => {
@@ -40,6 +45,7 @@ function DateApp() {
     setDateData(newDateData)
     try {
       await createDateRequest({
+        guestName,
         datetime: newDateData.datetime,
         activity: newDateData.activity,
       })

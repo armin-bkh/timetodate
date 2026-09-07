@@ -1,7 +1,8 @@
-const API_BASE = 'http://localhost:3001/api'
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3001/api'
 
 export interface DateRequest {
   id: number
+  guestName: string
   datetime: string
   activity: string
   status: string
@@ -10,6 +11,7 @@ export interface DateRequest {
 }
 
 export interface CreateDatePayload {
+  guestName?: string
   datetime: string
   activity: string
   message?: string
