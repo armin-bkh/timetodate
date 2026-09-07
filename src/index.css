@@ -67,13 +67,19 @@
   box-sizing: border-box;
 }
 
+html, body, #root {
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #fce7f3 0%, #ffe4e6 50%, #fef3c7 100%);
-  min-height: 100vh;
+  background-attachment: fixed;
   overflow-x: hidden;
-  margin: 0;
-  padding: 0;
 }
 
 [dir="rtl"] body {
