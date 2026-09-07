@@ -73,7 +73,7 @@ export default function StepFour({ dateData }: StepFourProps) {
         <div className="space-y-4">
           <div className="flex items-center justify-center gap-3">
             <span className="text-2xl">📅</span>
-            <div className="text-left">
+            <div className="text-left rtl:text-right">
               <div className="text-sm text-gray-400">{t('step4.when')}</div>
               <div className="text-gray-700 font-medium">
                 {formatDateTime(dateData.datetime)}
@@ -85,7 +85,7 @@ export default function StepFour({ dateData }: StepFourProps) {
 
           <div className="flex items-center justify-center gap-3">
             <span className="text-2xl">✨</span>
-            <div className="text-left">
+            <div className="text-left rtl:text-right">
               <div className="text-sm text-gray-400">{t('step4.what')}</div>
               <div className="text-gray-700 font-medium">
                 {t(`step3.options.${dateData.activity}.label`)}
