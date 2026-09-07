@@ -195,3 +195,7 @@ body {
   border-color: #f472b6;
   box-shadow: 0 0 20px rgba(244, 114, 182, 0.3);
 }
+
+.time-scroll::-webkit-scrollbar {
+  display: none;
+}

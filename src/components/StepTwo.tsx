@@ -1,37 +1,45 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { isAfter } from 'date-fns'
+import DatePicker from './DatePicker'
+import TimePicker from './TimePicker'
 
 interface StepTwoProps {
   onNext: (datetime: string) => void
 }
 
 export default function StepTwo({ onNext }: StepTwoProps) {
-  const [date, setDate] = useState('')
-  const [time, setTime] = useState('')
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [selectedTime, setSelectedTime] = useState<{ hours: number; minutes: number } | null>(null)
   const [error, setError] = useState('')
 
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date)
+    setError('')
+  }
+
+  const handleTimeSelect = (hours: number, minutes: number) => {
+    setSelectedTime({ hours, minutes })
+    setError('')
+  }
+
   const handleSubmit = () => {
-    if (!date || !time) {
+    if (!selectedDate || !selectedTime) {
       setError('Please select both date and time 💕')
       return
     }
 
-    const selectedDateTime = new Date(`${date}T${time}`)
-    const now = new Date()
+    const datetime = new Date(selectedDate)
+    datetime.setHours(selectedTime.hours, selectedTime.minutes, 0, 0)
 
-    if (!isAfter(selectedDateTime, now)) {
+    if (!isAfter(datetime, new Date())) {
       setError('Please choose a future date and time 🕐')
       return
     }
 
     setError('')
-    onNext(`${date}T${time}`)
-  }
-
-  const getMinDate = () => {
-    const today = new Date()
-    return today.toISOString().split('T')[0]
+    const iso = datetime.toISOString().slice(0, 16)
+    onNext(iso)
   }
 
   return (
@@ -78,16 +86,13 @@ export default function StepTwo({ onNext }: StepTwoProps) {
           <label className="block text-pink-400 font-medium mb-3">
             📆 Date
           </label>
-          <input
-            type="date"
-            value={date}
-            min={getMinDate()}
-            onChange={(e) => {
-              setDate(e.target.value)
-              setError('')
-            }}
-            className="input-love w-full"
-          />
+          <div className="bg-white/50 rounded-2xl p-4">
+            <DatePicker
+              selectedDate={selectedDate}
+              onDateSelect={handleDateSelect}
+              minDate={new Date()}
+            />
+          </div>
         </motion.div>
 
         <motion.div
@@ -98,16 +103,27 @@ export default function StepTwo({ onNext }: StepTwoProps) {
           <label className="block text-pink-400 font-medium mb-3">
             🕐 Time
           </label>
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => {
-              setTime(e.target.value)
-              setError('')
-            }}
-            className="input-love w-full"
-          />
+          <div className="bg-white/50 rounded-2xl p-4">
+            <TimePicker
+              selectedTime={selectedTime}
+              onTimeSelect={handleTimeSelect}
+            />
+          </div>
         </motion.div>
+
+        {selectedDate && selectedTime && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-pink-50 rounded-xl py-3 px-4 text-center text-pink-500 font-medium"
+          >
+            📅 {selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+            {' at '}
+            {selectedTime.hours === 0 ? '12' : selectedTime.hours > 12 ? selectedTime.hours - 12 : selectedTime.hours}
+            :{selectedTime.minutes.toString().padStart(2, '0')}
+            {selectedTime.hours >= 12 ? ' PM' : ' AM'}
+          </motion.div>
+        )}
 
         {error && (
           <motion.p
@@ -126,7 +142,7 @@ export default function StepTwo({ onNext }: StepTwoProps) {
           onClick={handleSubmit}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="btn-primary w-full text-white font-semibold py-4 rounded-xl text-lg"
+          className="btn-primary w-full text-white font-semibold rounded-xl text-lg"
         >
           Continue 💕
         </motion.button>
