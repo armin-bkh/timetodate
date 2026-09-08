@@ -77,14 +77,14 @@ html, body, #root {
 
 html {
   background: linear-gradient(135deg, #fce7f3 0%, #ffe4e6 50%, #fef3c7 100%);
+  background-attachment: fixed;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #fce7f3 0%, #ffe4e6 50%, #fef3c7 100%);
-  background-attachment: fixed;
   overflow-x: hidden;
   padding-bottom: env(safe-area-inset-bottom);
+  padding-top: env(safe-area-inset-top);
 }
 
 [dir="rtl"] body {
